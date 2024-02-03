@@ -13,7 +13,7 @@ http:
     default:
       chain:
         middlewares:
-          - default-security-headers
+          # - default-security-headers
           - hemmelig
           - error-pages
           - gzip
@@ -33,10 +33,10 @@ http:
       
     hemmelig:
       headers:
-        referrerPolicy: "no-referrer"
-        browserXSSFilter: true
-        contentTypeNosniff: true
-        customFrameOptionsValue: "SAMEORIGIN"
+        # referrerPolicy: "no-referrer"
+        # browserXSSFilter: true
+        # contentTypeNosniff: true
+        # customFrameOptionsValue: "SAMEORIGIN"
         customRequestHeaders: 
           X-Forwarded-Proto: https
           forwardedHeaders:

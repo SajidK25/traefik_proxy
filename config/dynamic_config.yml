@@ -14,7 +14,7 @@ http:
       chain:
         middlewares:
           # - default-security-headers
-          - hemmelig
+          # - hemmelig
           - error-pages
           - gzip
     # Add automatically some security headers

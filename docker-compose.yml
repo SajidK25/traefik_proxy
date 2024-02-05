@@ -1,61 +1,49 @@
-version: "3.8"
-
+---
+version: "3.7"
 services:
   traefik:
-    labels:
-      traefik.docker.network: "traefik-net"
-      traefik.enable: "true"
-      traefik.http.routers.traefik.entrypoints: "https"
-      traefik.http.routers.traefik.middlewares: "traefikAuth@file,default@file"
-      traefik.http.routers.traefik.rule: "Host(`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}`)" # [Attention]
-      traefik.http.routers.traefik.service: "api@internal"
-      traefik.http.routers.traefik.tls.certresolver: "letsEncrypt"
-      traefik.http.routers.traefik.tls.options: "modern@file"
-      traefik.http.routers.traefik.tls: "true"
-      traefik.http.services.traefik.loadbalancer.server.port: 8080
-      traefik.http.services.traefik.loadbalancer.sticky.cookie.httpOnly: "true"
-      traefik.http.services.traefik.loadbalancer.sticky.cookie.secure: "true"
-      # Schedule Traefik on the Swarm manager nodes, as the Swarm API is only exposed on the manager nodes
-      # See https://docs.traefik.io/providers/docker/#docker-api-access_1
-    # Published on https://hub.docker.com/_/traefik?tab=tags
-    image: traefik:v2.10                                                     # See https://github.com/containous/traefik/releases
+    image: "traefik:v2.10"
+    container_name: "traefik"
+    command:
+      #- "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      #- "--certificatesresolvers.myresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory"
+      - "--certificatesresolvers.myresolver.acme.email=sajidk25@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+
+    restart: always
     networks:
       - traefik-net
     ports:
-      # - 80:80
-      # - 443:443
-      # To be able to listen on port 80 (http)
-      - mode: host
-        published: 80
-        target: 80
-      # To be able to listen on port 443 (https)
-      - mode: host
-        published: 443
-        target: 443
+    - "80:80"
+    - "443:443"
+    - "8080:8080"
     volumes:
-      - ./localtime:/etc/localtime:ro                                        # Set the container timezone by sharing the read-only localtime
-      - ./config/dynamic_config.yml:/etc/traefik/config.yml:ro            # Set the dynamic configuration for the file provider
-      - ./config/traefik.yml:/etc/traefik/traefik.yml:ro          # Set the static configuration
-      - ./cert:/etc/traefik/acme                                      # Set the location where my ACME certificates are saved to
-      - /var/run/docker.sock:/var/run/docker.sock:ro                            # Give access to the UNIX Docker socket
-  
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
+      - "./letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
     labels:
-      traefik.docker.network: "traefik-net"
-      traefik.enable: "true"
-      traefik.http.routers.whoami.entrypoints: "https"
-      traefik.http.routers.whoami.middlewares: "default@file"
-      traefik.http.routers.whoami.rule: "Host(`whoami.silentspeaker.org`)"
-      traefik.http.routers.whoami.tls.certresolver: "letsEncrypt"
-      traefik.http.routers.whoami.tls.options: "modern@file"
-      traefik.http.routers.whoami.tls: "true"
-      # traefik.http.services.whoami.loadbalancer.server.port: 3000
-      # traefik.http.services.whoami.loadbalancer.sticky.cookie.httpOnly: "true"
-      # traefik.http.services.whoami.loadbalancer.sticky.cookie.secure: "true"
-    networks:
-      - traefik-net
+      - traefik.enable=true
+      - traefik.http.routers.dashboard.rule=Host(`traefik.${DOMAIN_NAME}`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))
+      - traefik.http.routers.dashboard.tls=true
+      - traefik.http.routers.dashboard.entrypoints=websecure
+      - traefik.http.routers.dashboard.service=api@internal
+      # Middlewares
+      - traefik.http.routers.dashboard.middlewares=dashboard_auth
+      ## Creates 2 authentication middlewares
+      ### `dashboard_auth` is a BasicAuth middleware and is going to be used by the `dashboard` router.
+      ### dashboard:tutorial
+      - traefik.http.middlewares.dashboard_auth.basicauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD_HASH}
+      ### `auth` is a DigestAuth middleware and is going to be used by the `whoami_route` router.
+      ### whoami:tutorial
+      # - traefik.http.middlewares.digest_auth.digestauth.users=${TRAEFIK_USER}:${TRAEFIK_PASSWORD_HASH}
 networks:
   traefik-net:
     external: true 

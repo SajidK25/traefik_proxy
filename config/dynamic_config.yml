@@ -13,7 +13,8 @@ http:
     default:
       chain:
         middlewares:
-          # - default-security-headers
+          - default-security-headers
+          - wwwtohttps
           # - hemmelig
           - error-pages
           - gzip
@@ -30,19 +31,23 @@ http:
         stsIncludeSubdomains: true                        # Add includeSubdomains to the Strict-Transport-Security header
         stsPreload: true                                  # Add preload flag appended to the Strict-Transport-Security header
         stsSeconds: 63072000                              # Set the max-age of the Strict-Transport-Security header (63072000 = 2 years)
-      
-    hemmelig:
-      headers:
-        # referrerPolicy: "no-referrer"
-        # browserXSSFilter: true
-        # contentTypeNosniff: true
-        # customFrameOptionsValue: "SAMEORIGIN"
-        customRequestHeaders: 
-          X-Forwarded-Proto: https
-          forwardedHeaders:
-            insecure: true
-          proxyProtocol:
-            insecure: true
+    wwwtohttps:
+      redirectregex:
+        regex: "^https?://www\\.(.+)" 
+        replacement: "https://$${1}"
+        permanent: true
+    # hemmelig:
+    #   headers:
+    #     # referrerPolicy: "no-referrer"
+    #     # browserXSSFilter: true
+    #     # contentTypeNosniff: true
+    #     # customFrameOptionsValue: "SAMEORIGIN"
+    #     customRequestHeaders: 
+    #       X-Forwarded-Proto: https
+    #       forwardedHeaders:
+    #         insecure: true
+    #       proxyProtocol:
+    #         insecure: true
     # Serve the error pages when the status is included inside the following ranges
     # Use with traefik.http.routers.myRouter.middlewares: "error-pages@file"
     error-pages:

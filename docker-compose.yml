@@ -2,9 +2,9 @@ version: "3.8"
 
 services:
   traefik:
-    environment:
-      - CLOUDFLARE_EMAIL=florian@nextstopbern.com
-      - CLOUDFLARE_API_KEY=a7e80b68036e69c316bf1a41e99e7bb3740d7
+    # environment:
+    #   - CLOUDFLARE_EMAIL=florian@nextstopbern.com
+    #   - CLOUDFLARE_API_KEY=a7e80b68036e69c316bf1a41e99e7bb3740d7
     labels:
       traefik.docker.network: "traefik-net"
       traefik.enable: "true"

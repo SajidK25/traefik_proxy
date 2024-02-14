@@ -12,7 +12,7 @@ certificatesResolvers:
     acme:
       email: "florian@nextstopbern.com"  # Email address used for registration
       storage: "/etc/traefik/acme/acme.json"    # [Attention] File or key used for certificates storage
-      tlsChallenge: {}
+      tlschallenge: true
   # production:
   #   acme:
   #     email: florian@nextstopbern.com

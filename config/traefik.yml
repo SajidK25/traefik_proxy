@@ -10,8 +10,9 @@ api:
 certificatesResolvers:
   letsEncrypt:
     acme:
-      email: "florian@nextstopbern.com"  # Email address used for registration
+      email: "m.mut@falktron.de"  # Email address used for registration
       storage: "/etc/traefik/acme/acme.json"    # [Attention] File or key used for certificates storage
+      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       tlschallenge: true
   # production:
   #   acme:
@@ -46,7 +47,7 @@ providers:
   docker:
     endpoint: "unix:///var/run/docker.sock"   # Listen to the UNIX Docker socket
     exposedByDefault: false                   # Only expose container that are explicitly enabled (using label traefik.enabled)
-    network: "traefik-net"                    # Default network to use for connections to all containers.
+    #network: "traefik-net"                    # Default network to use for connections to all containers.
     # swarmmode: true                           # Activates the Swarm Mode (instead of standalone Docker).
     # swarmModeRefreshSeconds: 15               # Defines the polling interval (in seconds) in Swarm Mode.
     # watch: true                               # Watch Docker Swarm events

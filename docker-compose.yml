@@ -2,11 +2,8 @@ version: "3.8"
 
 services:
   traefik:
-    # environment:
-    #   - CLOUDFLARE_EMAIL=florian@nextstopbern.com
-    #   - CLOUDFLARE_API_KEY=a7e80b68036e69c316bf1a41e99e7bb3740d7
     labels:
-      traefik.docker.network: "traefik-net"
+      # traefik.docker.network: "traefik-net"
       traefik.enable: "true"
       traefik.http.routers.traefik.entrypoints: "https"
       traefik.http.routers.traefik.middlewares: "traefikAuth@file,default@file"
@@ -21,9 +18,9 @@ services:
       # Schedule Traefik on the Swarm manager nodes, as the Swarm API is only exposed on the manager nodes
       # See https://docs.traefik.io/providers/docker/#docker-api-access_1
     # Published on https://hub.docker.com/_/traefik?tab=tags
-    image: traefik:v2.10                                                     # See https://github.com/containous/traefik/releases
-    networks:
-      - traefik-net
+    image: traefik:v3.0                                                     # See https://github.com/containous/traefik/releases
+    # networks:
+    #   - traefik-net
     ports:
       # - 80:80
       # - 443:443
@@ -46,16 +43,16 @@ services:
     image: "traefik/whoami"
     container_name: "simple-service"
     labels:
-      traefik.docker.network: "traefik-net"
+      # traefik.docker.network: "traefik-net"
       traefik.enable: "true"
       traefik.http.routers.whoami.entrypoints: "https"
       traefik.http.routers.whoami.middlewares: "default@file"
-      traefik.http.routers.whoami.rule: "Host(`whoami.bookingboost.ch`)"
+      traefik.http.routers.whoami.rule: "Host(`whoami.t99ltd.info`)"
       traefik.http.routers.whoami.tls.certresolver: "letsEncrypt"
       traefik.http.routers.whoami.tls.options: "modern@file"
       traefik.http.routers.whoami.tls: "true"
-    networks:
-      - traefik-net
-networks:
-  traefik-net:
-    external: true 
+#     networks:
+#       - traefik-net
+# networks:
+#   traefik-net:
+#     external: true 

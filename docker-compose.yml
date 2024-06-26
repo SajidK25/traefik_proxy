@@ -39,18 +39,18 @@ services:
       - ./cert:/etc/traefik/acme                                      # Set the location where my ACME certificates are saved to
       - /var/run/docker.sock:/var/run/docker.sock:ro                            # Give access to the UNIX Docker socket
   
-  whoami:
-    image: "traefik/whoami"
-    container_name: "simple-service"
-    labels:
-      # traefik.docker.network: "traefik-net"
-      traefik.enable: "true"
-      traefik.http.routers.whoami.entrypoints: "https"
-      # traefik.http.routers.whoami.middlewares: "default@file"
-      traefik.http.routers.whoami.rule: "Host(`whoami.t99ltd.info`)"
-      traefik.http.routers.whoami.tls.certresolver: "letsEncrypt"
-      # traefik.http.routers.whoami.tls.options: "modern@file"
-      traefik.http.routers.whoami.tls: "true"
+  # whoami:
+  #   image: "traefik/whoami"
+  #   container_name: "simple-service"
+  #   labels:
+  #     # traefik.docker.network: "traefik-net"
+  #     traefik.enable: "true"
+  #     traefik.http.routers.whoami.entrypoints: "https"
+  #     # traefik.http.routers.whoami.middlewares: "default@file"
+  #     traefik.http.routers.whoami.rule: "Host(`whoami.t99ltd.info`)"
+  #     traefik.http.routers.whoami.tls.certresolver: "letsEncrypt"
+  #     # traefik.http.routers.whoami.tls.options: "modern@file"
+  #     traefik.http.routers.whoami.tls: "true"
 #     networks:
 #       - traefik-net
 # networks:

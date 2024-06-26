@@ -65,7 +65,7 @@ http:
       compress: {}
   routers:
     bitrix-router:
-      rule: "Host(`t99ltd.info`)"
+      rule: "Host(`orca.falktron.dev`)"
       entryPoints:
         - https
       middlewares:

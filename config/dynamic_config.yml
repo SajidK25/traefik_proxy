@@ -63,7 +63,7 @@ http:
     # Use with traefik.http.routers.myRouter.middlewares: "gzip@file"
     gzip:
       compress: {}
-  router:
+  routers:
     bitrix-router:
       rule: "Host(`t99ltd.info`)"
       entryPoints:

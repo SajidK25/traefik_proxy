@@ -6,7 +6,7 @@ services:
       # traefik.docker.network: "traefik-net"
       traefik.enable: "true"
       traefik.http.routers.traefik.entrypoints: "https"
-      traefik.http.routers.traefik.middlewares: "traefikAuth@file,default@file"
+      # traefik.http.routers.traefik.middlewares: "traefikAuth@file,default@file"
       traefik.http.routers.traefik.rule: "Host(`${TRAEFIK_SUBDOMAIN}.${TRAEFIK_DOMAIN}`)" # [Attention]
       traefik.http.routers.traefik.service: "api@internal"
       traefik.http.routers.traefik.tls.certresolver: "letsEncrypt"
@@ -46,7 +46,7 @@ services:
       # traefik.docker.network: "traefik-net"
       traefik.enable: "true"
       traefik.http.routers.whoami.entrypoints: "https"
-      traefik.http.routers.whoami.middlewares: "default@file"
+      # traefik.http.routers.whoami.middlewares: "default@file"
       traefik.http.routers.whoami.rule: "Host(`whoami.t99ltd.info`)"
       traefik.http.routers.whoami.tls.certresolver: "letsEncrypt"
       # traefik.http.routers.whoami.tls.options: "modern@file"

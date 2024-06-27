@@ -4,7 +4,8 @@
 
 api:
   dashboard: true                             # Enable the dashboard
-
+log:
+  level: DEBUG
 # Certificate Resolvers are responsible for retrieving certificates from an ACME server
 # See https://doc.traefik.io/traefik/https/acme/#certificate-resolvers
 certificatesResolvers:
@@ -12,22 +13,9 @@ certificatesResolvers:
     acme:
       email: "m.mut@falktron.de"  # Email address used for registration
       storage: "/etc/traefik/acme/acme.json"    # [Attention] File or key used for certificates storage
-      caServer: https://acme-staging-v02.api.letsencrypt.org/directory
+      #caServer: https://acme-staging-v02.api.letsencrypt.org/directory
       tlschallenge: true
-  # production:
-  #   acme:
-  #     email: florian@nextstopbern.com
-  #     storage: /etc/traefik/acme/acme.json
-  #     caServer: "https://acme-v02.api.letsencrypt.org/directory"
-  #     # -- (Optional) Remove this section, when using DNS Challenge
-  #     # httpChallenge:
-  #     #   entryPoint: web
-  #     # -- (Optional) Configure DNS Challenge
-  #     dnsChallenge:
-  #       provider: cloudflare
-  #       resolvers:
-  #         - "1.1.1.1:53"
-  #         - "8.8.8.8:53"
+ 
 entryPoints:
   http:
     address: ":80"                            # Create the HTTP entrypoint on port 80

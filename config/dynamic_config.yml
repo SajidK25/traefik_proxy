@@ -81,7 +81,7 @@ http:
     bitrix:
       loadBalancer:
         servers:
-          - url: "http://146.190.179.17:80"
+          - url: "http://146.190.179.17"
     # Error pages
     traefik-error-pages:
       loadBalancer:

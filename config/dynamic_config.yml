@@ -68,11 +68,11 @@ http:
       rule: "Host(`orca.falktron.dev`)"
       entryPoints:
         - https
-      middlewares:
-        - traefikAuth
-        - default-security-headers
-        - error-pages
-        - gzip
+      # middlewares:
+      #   - traefikAuth
+      #   - default-security-headers
+      #   - error-pages
+      #   - gzip
       tls:
         certResolver: letsEncrypt
         options: modern
